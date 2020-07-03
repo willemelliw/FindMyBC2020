@@ -4,6 +4,7 @@ from requests_ntlm import HttpNtlmAuth
 import subprocess
 from tkinter import *
 
+
 '''Set these before usage'''
 bcFolder = 'C:\\WillemTemp\\broadcasts\\'
 notepaddir = r'C:\Program Files (x86)\Notepad++\notepad++.exe'
@@ -17,18 +18,21 @@ mode = 'a'
 window=Tk()
 window.wm_title('Find My Broadcast v20.26')
 
-
+#mixtest = 4330991
 
 
 #scrape broadcast from Q-bay
 def getBc(mix):
     url = 'http://vcatsvcg.gen.volvocars.net/qbay/base/vinviewer/VinVCC.asp'
-    payload = {'VIN':mix,'BuildstatusID':'1'}
+    payload = {'VIN':mix,'BuildstatusID':'2'}
+
     cookie = requests.get('http://vcatsvcg.gen.volvocars.net/qbay/base/vinviewer/vinsummary.asp?', params=payload).cookies
+
+    #requests.get(url, auth=HttpNtlmAuth('VCCNET\wvanouyt', '20Wvo=02'), cookies=cookie)
     r = requests.get(url, auth=HttpNtlmAuth('wvanouyt', '20Wvo=02'), cookies=cookie)
     raw = BeautifulSoup(r.text,'html.parser')
     all = raw.find_all('td')
-    print(raw)
+    #print(raw)
     try:
         bcdata = all[0].text.replace('<br/>','')
         bcstate = all[2].text + ' = state mix below%\r'
